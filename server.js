@@ -69,12 +69,10 @@ app.post('/api/generate-couplet', async (req, res) => {
     console.error('生成春联时出错:', error.response?.data || error.message);
     res.status(500).json({ 
       error: '生成春联时出错', 
-      details: error.response?.data?.error?.message || String(error.message)
+      details: error.response?.data?.error || error.message 
     });
   }
 });
 
-// 启动服务器
-app.listen(PORT, () => {
-  console.log(`服务器运行在 http://localhost:3000`);
-});
+// 导出 app 供 Vercel 使用
+module.exports = app;
