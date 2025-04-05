@@ -66,26 +66,11 @@ app.post('/api/generate-couplet', async (req, res) => {
     
     res.json(result);
   } catch (error) {
-    console.error('生成春联时出错:', error);
-    let errorMessage = '生成春联时出错';
-    let errorDetails = '';
-    
-    if (error.response) {
-      // API返回了错误响应
-      errorDetails = error.response.data?.error || error.response.data || error.response.statusText;
-    } else if (error.request) {
-      // 请求已发出，但没有收到响应
-      errorDetails = '无法连接到API服务器，请检查网络连接';
-    } else {
-      // 请求配置出错
-      errorDetails = error.message || '未知错误';
-    }
-    
+    console.error('生成春联时出错:', error.response?.data || error.message);
     res.status(500).json({ 
-      error: errorMessage,
-      details: errorDetails
+      error: '生成春联时出错', 
+      details: error.response?.data?.error?.message || String(error.message)
     });
-
   }
 });
 
