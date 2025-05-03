@@ -4,8 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AI春联生成器</title>
+  <meta name="description" content="基于AI的春联生成器，可以根据用户输入的主题自动生成传统春联">
+  <meta name="theme-color" content="#c62828">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" href="icons/icon-192x192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192x192.png">
 </head>
 <body>
   <div class="container">
@@ -13,7 +18,7 @@
       <h1>AI春联生成器</h1>
       <p>输入主题，让AI为您创作一副精美春联</p>
     </header>
-    
+
     <main>
       <div class="api-key-section">
         <input type="text" id="api-key-input" placeholder="请输入您的OpenRouter API Key" />
@@ -24,24 +29,24 @@
         <input type="text" id="theme-input" placeholder="请输入春联主题，如：新年、福、春天..." />
         <button id="generate-btn">生成春联</button>
       </div>
-      
+
       <div class="loading" id="loading">
         <div class="spinner"></div>
         <p>正在创作春联，请稍候...</p>
       </div>
-      
+
       <div class="result-section" id="result-section">
         <div class="couplet-container">
           <div class="horizontal-scroll">
             <div class="horizontal" id="horizontal"></div>
           </div>
-          
+
           <div class="couplet-pair">
             <div class="couplet upper" id="upper"></div>
             <div class="couplet lower" id="lower"></div>
           </div>
         </div>
-        
+
         <div class="actions">
           <button id="copy-btn" class="action-btn">
             <i class="fas fa-copy"></i> 复制
@@ -51,15 +56,15 @@
           </button>
         </div>
       </div>
-      
+
       <div class="error-message" id="error-message"></div>
     </main>
-    
+
     <footer>
       <p>© 2025 AI春联生成器 | 使用 OpenRouter API 提供支持</p>
     </footer>
   </div>
-  
+
   <script src="script.js"></script>
 </body>
 </html>

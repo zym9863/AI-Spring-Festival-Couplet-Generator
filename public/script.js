@@ -1,3 +1,16 @@
+// Register service worker for PWA
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then(registration => {
+        console.log('Service Worker registered with scope:', registration.scope);
+      })
+      .catch(error => {
+        console.error('Service Worker registration failed:', error);
+      });
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   // 获取DOM元素
   const apiKeyInput = document.getElementById('api-key-input');
@@ -18,14 +31,14 @@ document.addEventListener('DOMContentLoaded', () => {
   if (savedApiKey) {
     apiKeyInput.value = savedApiKey;
   }
-  
+
   // 当前春联数据
   let currentCouplet = {
     upper: '',
     lower: '',
     horizontal: ''
   };
-  
+
   // 生成春联
   async function generateCouplet(theme) {
     try {
@@ -33,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
       loadingEl.style.display = 'block';
       resultSection.style.display = 'none';
       errorMessageEl.style.display = 'none';
-      
+
       // 发送请求到后端API
       // 获取API Key
       const apiKey = localStorage.getItem('openRouterApiKey');
@@ -49,26 +62,26 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         body: JSON.stringify({ theme })
       });
-      
+
       // 检查响应状态
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error || '生成春联失败');
       }
-      
+
       // 解析响应数据
       const data = await response.json();
-      
+
       // 保存当前春联数据
       currentCouplet = {
         upper: data.upper,
         lower: data.lower,
         horizontal: data.horizontal
       };
-      
+
       // 更新UI显示春联
       updateCoupletDisplay();
-      
+
       // 隐藏加载动画，显示结果
       loadingEl.style.display = 'none';
       resultSection.style.display = 'block';
@@ -80,24 +93,24 @@ document.addEventListener('DOMContentLoaded', () => {
       errorMessageEl.style.display = 'block';
     }
   }
-  
+
   // 更新春联显示
   function updateCoupletDisplay() {
     upperEl.textContent = currentCouplet.upper;
     lowerEl.textContent = currentCouplet.lower;
     horizontalEl.textContent = currentCouplet.horizontal;
   }
-  
+
   // 复制春联内容
   function copyCoupletText() {
     const coupletText = `横批：${currentCouplet.horizontal}\n上联：${currentCouplet.upper}\n下联：${currentCouplet.lower}`;
-    
+
     navigator.clipboard.writeText(coupletText)
       .then(() => {
         // 显示复制成功提示
         const originalText = copyBtn.innerHTML;
         copyBtn.innerHTML = '<i class="fas fa-check"></i> 已复制';
-        
+
         // 2秒后恢复原始文本
         setTimeout(() => {
           copyBtn.innerHTML = originalText;
@@ -108,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
         alert('复制失败，请手动复制');
       });
   }
-  
+
   // 事件监听器 - 生成按钮点击
   generateBtn.addEventListener('click', () => {
     const theme = themeInput.value.trim();
@@ -117,20 +130,20 @@ document.addEventListener('DOMContentLoaded', () => {
       errorMessageEl.style.display = 'block';
       return;
     }
-    
+
     generateCouplet(theme);
   });
-  
+
   // 事件监听器 - 输入框回车
   themeInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
       generateBtn.click();
     }
   });
-  
+
   // 事件监听器 - 复制按钮
   copyBtn.addEventListener('click', copyCoupletText);
-  
+
   // 事件监听器 - 重新生成按钮
   newBtn.addEventListener('click', () => {
     themeInput.value = '';
